@@ -19,42 +19,8 @@ public class Arrays_parallelbmi {
         // Input weights and heights for each person
         for (int i = 0; i < numPeople; i++) {
             System.out.println("\nPerson " + (i + 1) + ":"); // Getting each person on a new line
-            System.out.print("Enter weight in kilograms: ");
-            weights[i] = scanner.nextDouble();
-            
-            // Validate weight input to ensure it's greater than zero
-            while (weights[i] <= 0) {
-                System.out.println("Weight must be greater than zero. Please enter again.");
-                System.out.print("Enter weight in kilograms: ");
-                weights[i] = scanner.nextDouble();
-            }
-            
-            System.out.print("Enter height in meters: ");
-            // Accept height as a string to handle invalid input gracefully
-            String heightInput = scanner.next();
-        
-            // Convert height input to double
-            try {
-                heights[i] = Double.parseDouble(heightInput);
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Height must be a number.");
-                i--; // Go back to the previous person
-                continue;
-            }
-            
-            // Validate height input to ensure it's greater than zero
-            while (heights[i] <= 0) {
-                System.out.println("Height must be greater than zero. Please enter again.");
-                System.out.print("Enter height in meters: ");
-                heightInput = scanner.next();
-                try {
-                    heights[i] = Double.parseDouble(heightInput);
-                } catch (NumberFormatException e) {
-                    System.out.println("Invalid input. Height must be a number.");
-                    i--; // Go back to the previous person
-                    continue;
-                }
-            }
+            weights[i] = getValidWeight(scanner); // Call method to get valid weight
+            heights[i] = getValidHeight(scanner); // Call method to get valid height
         }
         
         // Calculate BMI for each person
@@ -84,5 +50,38 @@ public class Arrays_parallelbmi {
     // Method to calculate BMI
     public static double calculateBMI(double weight, double height) {
         return weight / (height * height);
+    }
+
+    // Method to get valid weight from user
+    public static double getValidWeight(Scanner scanner) {
+        double weight;
+        while (true) {
+            System.out.print("Enter weight in kilograms: ");
+            weight = scanner.nextDouble();
+            if (weight > 0) {
+                break;
+            }
+            System.out.println("Weight must be greater than zero. Please enter again.");
+        }
+        return weight;
+    }
+
+    // Method to get valid height from user
+    public static double getValidHeight(Scanner scanner) {
+        double height;
+        while (true) {
+            System.out.print("Enter height in meters: ");
+            String heightInput = scanner.next();
+            try {
+                height = Double.parseDouble(heightInput);
+                if (height > 0) {
+                    break;
+                }
+                System.out.println("Height must be greater than zero. Please enter again.");
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Height must be a number.");
+            }
+        }
+        return height;
     }
 }
